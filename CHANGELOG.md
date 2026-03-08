@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.2] - 2026-03-09
+
+### Added
+- Added `agreeButtonLabel` prop to `ConsentFlow` for custom button text.
+
+### Changed
+- Refactored `ConsentFlow` to remove redundant native alert confirmation for a smoother UX.
+- Improved accessibility in `ConsentDisclosureCard` with better roles and labels.
+- Centralized theme management in `src/theme.ts`.
+
 ## [0.1.1] - 2026-03-09
 
 ### Fixed
