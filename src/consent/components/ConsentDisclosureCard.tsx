@@ -1,19 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { ConsentUITheme, DisclosureItem } from "../../types";
-
-const defaultTheme: ConsentUITheme = {
-  primaryColor: "#2563EB",
-  surfaceColor: "#FFFFFF",
-  textColor: "#0F172A",
-  titleColor: "#0F172A",
-  privacyPolicyColor: "#2563EB",
-  buttonBackgroundColor: "#0F172A",
-  buttonTextColor: "#F8FAFC",
-  borderRadius: 12,
-  sheetRadius: 24,
-  buttonRadius: 12
-};
+import { defaultTheme } from "../../theme";
 
 interface ConsentDisclosureCardProps {
   title?: string;
@@ -40,8 +28,6 @@ export const ConsentDisclosureCard: React.FC<ConsentDisclosureCardProps> = ({
 
   return (
     <View
-      accessible
-      accessibilityRole="summary"
       style={[
         styles.container,
         {
@@ -50,7 +36,10 @@ export const ConsentDisclosureCard: React.FC<ConsentDisclosureCardProps> = ({
         }
       ]}
     >
-      <Text style={[styles.title, { color: merged.titleColor }]}>
+      <Text
+        accessibilityRole="header"
+        style={[styles.title, { color: merged.titleColor }]}
+      >
         {title ?? "AI Data Sharing Permission"}
       </Text>
       <Text style={[styles.description, { color: merged.textColor }]}>
@@ -62,6 +51,7 @@ export const ConsentDisclosureCard: React.FC<ConsentDisclosureCardProps> = ({
             <Image
               source={{ uri: item.imageUri }}
               style={styles.logo}
+              accessibilityLabel={`${item.title} logo`}
               onError={() => {
                 setFailedImageIds((prev) => (prev.includes(item.id) ? prev : [...prev, item.id]));
               }}
@@ -74,6 +64,7 @@ export const ConsentDisclosureCard: React.FC<ConsentDisclosureCardProps> = ({
                   backgroundColor: item.fallbackColor ?? "#E2E8F0"
                 }
               ]}
+              accessibilityLabel={`${item.title} placeholder`}
             />
           )}
           <View style={styles.rowBody}>

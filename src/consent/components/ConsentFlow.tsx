@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from "react";
-import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { AIProvider, ConsentUITheme, DisclosureItem } from "../../types";
 import { ConsentDisclosureCard } from "./ConsentDisclosureCard";
 import { getProviderImage } from "../provider-images";
+import { defaultTheme } from "../../theme";
 
 interface ConsentFlowProps {
   isVisible: boolean;
@@ -11,23 +12,11 @@ interface ConsentFlowProps {
   extraMessage?: string;
   theme?: Partial<ConsentUITheme>;
   showRequiredDisclosure?: boolean;
+  agreeButtonLabel?: string;
   onOpenPrivacyPolicy: (url: string) => void;
   onRequestClose?: () => void;
   onDecision?: (accepted: boolean) => void | Promise<void>;
 }
-
-const defaultTheme: ConsentUITheme = {
-  primaryColor: "#2563EB",
-  surfaceColor: "#FFFFFF",
-  textColor: "#0F172A",
-  titleColor: "#0F172A",
-  privacyPolicyColor: "#2563EB",
-  buttonBackgroundColor: "#0F172A",
-  buttonTextColor: "#F8FAFC",
-  borderRadius: 12,
-  sheetRadius: 24,
-  buttonRadius: 12
-};
 
 export const ConsentFlow: React.FC<ConsentFlowProps> = ({
   isVisible,
@@ -36,6 +25,7 @@ export const ConsentFlow: React.FC<ConsentFlowProps> = ({
   extraMessage,
   theme,
   showRequiredDisclosure = true,
+  agreeButtonLabel,
   onOpenPrivacyPolicy,
   onRequestClose,
   onDecision
@@ -59,31 +49,15 @@ export const ConsentFlow: React.FC<ConsentFlowProps> = ({
     [providers]
   );
 
-  const openNativePrompt = () =>
-    new Promise<boolean>((resolve) => {
-      Alert.alert("Allow AI data sharing?", "Choose Allow to continue with AI-enabled features or Decline to use fallback mode.", [
-        {
-          text: "Decline",
-          style: "cancel",
-          onPress: () => resolve(false)
-        },
-        {
-          text: "Allow",
-          style: "default",
-          onPress: () => resolve(true)
-        }
-      ]);
-    });
-
   const handleTermsAgreement = async () => {
     if (isSubmitting) {
       return;
     }
     setIsSubmitting(true);
     try {
-      const accepted = await openNativePrompt();
+      // Direct agreement without double confirmation
       if (onDecision) {
-        await Promise.resolve(onDecision(accepted));
+        await Promise.resolve(onDecision(true));
       }
       onRequestClose?.();
     } finally {
@@ -131,7 +105,7 @@ export const ConsentFlow: React.FC<ConsentFlowProps> = ({
             ]}
           >
             <Text style={[styles.termsButtonLabel, { color: mergedTheme.buttonTextColor }]}>
-              {"I agree on terms"}
+              {agreeButtonLabel ?? "I agree on terms"}
             </Text>
           </Pressable>
         </View>
