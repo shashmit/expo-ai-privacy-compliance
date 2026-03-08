@@ -13,6 +13,7 @@ interface ConsentFlowProps {
   theme?: Partial<ConsentUITheme>;
   showRequiredDisclosure?: boolean;
   agreeButtonLabel?: string;
+  declineButtonLabel?: string;
   onOpenPrivacyPolicy: (url: string) => void;
   onRequestClose?: () => void;
   onDecision?: (accepted: boolean) => void | Promise<void>;
@@ -26,6 +27,7 @@ export const ConsentFlow: React.FC<ConsentFlowProps> = ({
   theme,
   showRequiredDisclosure = true,
   agreeButtonLabel,
+  declineButtonLabel,
   onOpenPrivacyPolicy,
   onRequestClose,
   onDecision
@@ -65,6 +67,21 @@ export const ConsentFlow: React.FC<ConsentFlowProps> = ({
     }
   };
 
+  const handleDecline = async () => {
+    if (isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      if (onDecision) {
+        await Promise.resolve(onDecision(false));
+      }
+      onRequestClose?.();
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Modal animationType="slide" transparent visible={isVisible} onRequestClose={onRequestClose}>
       <View style={styles.overlay}>
@@ -91,23 +108,42 @@ export const ConsentFlow: React.FC<ConsentFlowProps> = ({
               showRequiredDisclosure={showRequiredDisclosure}
             />
           </ScrollView>
-          <Pressable
-            accessibilityRole="button"
-            disabled={isSubmitting}
-            onPress={handleTermsAgreement}
-            style={[
-              styles.termsButton,
-              {
-                backgroundColor: mergedTheme.buttonBackgroundColor,
-                borderRadius: mergedTheme.buttonRadius
-              },
-              isSubmitting ? styles.disabled : undefined
-            ]}
-          >
-            <Text style={[styles.termsButtonLabel, { color: mergedTheme.buttonTextColor }]}>
-              {agreeButtonLabel ?? "I agree on terms"}
-            </Text>
-          </Pressable>
+          <View style={styles.actions}>
+            <Pressable
+              accessibilityRole="button"
+              disabled={isSubmitting}
+              onPress={handleDecline}
+              style={[
+                styles.secondaryButton,
+                {
+                  borderRadius: mergedTheme.buttonRadius,
+                  borderColor: mergedTheme.textColor
+                },
+                isSubmitting ? styles.disabled : undefined
+              ]}
+            >
+              <Text style={[styles.secondaryButtonLabel, { color: mergedTheme.textColor }]}>
+                {declineButtonLabel ?? "Decline"}
+              </Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              disabled={isSubmitting}
+              onPress={handleTermsAgreement}
+              style={[
+                styles.termsButton,
+                {
+                  backgroundColor: mergedTheme.buttonBackgroundColor,
+                  borderRadius: mergedTheme.buttonRadius
+                },
+                isSubmitting ? styles.disabled : undefined
+              ]}
+            >
+              <Text style={[styles.termsButtonLabel, { color: mergedTheme.buttonTextColor }]}>
+                {agreeButtonLabel ?? "I agree on terms"}
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Modal>
@@ -142,15 +178,29 @@ const styles = StyleSheet.create({
   },
   termsButton: {
     height: 48,
-    borderRadius: 12,
-    backgroundColor: "#0F172A",
+    flex: 1,
     alignItems: "center",
     justifyContent: "center"
+  },
+  secondaryButton: {
+    height: 48,
+    flex: 1,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  secondaryButtonLabel: {
+    fontWeight: "600",
+    fontSize: 15
   },
   termsButtonLabel: {
     color: "#F8FAFC",
     fontWeight: "700",
     fontSize: 15
+  },
+  actions: {
+    flexDirection: "row",
+    gap: 10
   },
   disabled: {
     opacity: 0.6

@@ -16,6 +16,8 @@ Consent UI framework for Expo React Native apps using AI providers.
 
 ```bash
 npm install @bot_shashmit/expo-ai-privacy-compliance
+yarn add @bot_shashmit/expo-ai-privacy-compliance
+bun add @bot_shashmit/expo-ai-privacy-compliance
 ```
 
 ## AI implementation helper
@@ -75,7 +77,7 @@ const consentConfig = defineConsentConfig({
 
 ## Present consent bottom sheet
 
-Trigger the consent UI from any app action. The sheet includes an **I agree on terms** button that triggers a native allow/decline popup.
+Trigger the consent UI from any app action. The sheet includes both **Decline** and **I agree on terms** actions.
 
 ```tsx
 const [showConsentSheet, setShowConsentSheet] = useState(false);
@@ -93,6 +95,8 @@ const [showConsentSheet, setShowConsentSheet] = useState(false);
   extraMessage={consentConfig.extraMessage}
   theme={consentConfig.ui?.theme}
   showRequiredDisclosure={consentConfig.ui?.showRequiredDisclosure}
+  declineButtonLabel="Not now"
+  agreeButtonLabel="Allow AI usage"
   onOpenPrivacyPolicy={(url) => Linking.openURL(url)}
   onDecision={(accepted) => {
     setConsentStatus(accepted ? "granted" : "denied");

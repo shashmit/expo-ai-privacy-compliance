@@ -4,6 +4,8 @@
 
 ```bash
 npm install @bot_shashmit/expo-ai-privacy-compliance
+yarn add @bot_shashmit/expo-ai-privacy-compliance
+bun add @bot_shashmit/expo-ai-privacy-compliance
 ```
 
 ## 2. Create consent config
@@ -99,6 +101,7 @@ export default function App() {
       theme: consentConfig.ui?.theme,
       showRequiredDisclosure: consentConfig.ui?.showRequiredDisclosure,
       agreeButtonLabel: "Allow AI usage",
+      declineButtonLabel: "Not now",
       onOpenPrivacyPolicy: (url: string) => Linking.openURL(url)
     }),
     []
@@ -116,7 +119,7 @@ export default function App() {
 }
 ```
 
-When consent is not granted, wrapped handlers open the consent bottom sheet. When the user taps **I agree on terms** (or your custom label), `onConsentGiven` is called and future wrapped handlers run normally.
+When consent is not granted, wrapped handlers open the consent bottom sheet. If the user taps **Decline**, consent remains blocked. If the user taps **I agree on terms** (or your custom label), `onConsentGiven` is called and future wrapped handlers run normally.
 
 ## 4. Use `ConsentFlow` directly (optional)
 
@@ -146,6 +149,7 @@ export default function App() {
         theme={consentConfig.ui?.theme}
         showRequiredDisclosure={consentConfig.ui?.showRequiredDisclosure}
         agreeButtonLabel="Allow AI usage"
+        declineButtonLabel="Not now"
         onOpenPrivacyPolicy={(url) => Linking.openURL(url)}
         onDecision={(accepted) => {
           if (accepted) {
@@ -206,6 +210,7 @@ export default function App() {
 - `config.theme`: optional UI theme override.
 - `config.showRequiredDisclosure`: optional required disclosure toggle.
 - `config.agreeButtonLabel`: optional custom agree button text.
+- `config.declineButtonLabel`: optional custom decline button text.
 - `config.onOpenPrivacyPolicy(url)`: callback for link handling.
 
 ### `useConsentGate()` return value
@@ -222,6 +227,7 @@ export default function App() {
 - `theme`: optional UI theme override.
 - `showRequiredDisclosure`: optional required disclosure toggle.
 - `agreeButtonLabel`: optional custom agree button text.
+- `declineButtonLabel`: optional custom decline button text.
 - `onOpenPrivacyPolicy(url)`: callback for link handling.
 - `onRequestClose()`: callback for sheet dismiss.
-- `onDecision(accepted)`: callback fired when user taps agree.
+- `onDecision(accepted)`: callback fired when user taps either action.

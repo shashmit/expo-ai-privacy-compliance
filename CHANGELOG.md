@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] - 2026-03-09
+
+### Added
+- Added `declineButtonLabel` prop to `ConsentFlow` and `ConsentGateProvider` config.
+- Added a decline action to consent UI that calls `onDecision(false)` and closes the sheet.
+
+### Changed
+- Updated docs to show the new decline action and label customization.
+
 ## [0.1.3] - 2026-03-09
 
 ### Changed

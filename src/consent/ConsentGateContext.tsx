@@ -9,6 +9,7 @@ interface ConsentGateConfig {
   theme?: Partial<ConsentUITheme>;
   showRequiredDisclosure?: boolean;
   agreeButtonLabel?: string;
+  declineButtonLabel?: string;
   onOpenPrivacyPolicy: (url: string) => void;
 }
 
@@ -86,6 +87,7 @@ export const ConsentGateProvider: React.FC<ConsentGateProviderProps> = ({
         theme={config.theme}
         showRequiredDisclosure={config.showRequiredDisclosure}
         agreeButtonLabel={config.agreeButtonLabel}
+        declineButtonLabel={config.declineButtonLabel}
         onOpenPrivacyPolicy={config.onOpenPrivacyPolicy}
         onRequestClose={handleClose}
         onDecision={handleDecision}
