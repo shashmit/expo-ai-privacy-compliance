@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.3] - 2026-03-09
+
+### Changed
+- Updated `integration-guide.md` to document the `ConsentGateProvider` + `useConsentGate()` integration flow.
+- Added optional direct `ConsentFlow` usage guidance for manual sheet control.
+- Clarified runtime prop references for `ConsentGateProvider`, `useConsentGate()`, and `ConsentFlow`.
+
 ## [0.1.2] - 2026-03-09
 
 ### Added
