@@ -1,0 +1,75 @@
+{
+  "name": "@native/expo-ai-privacy-compliance",
+  "version": "0.1.0",
+  "description": "Privacy compliance toolkit for Expo React Native AI integrations",
+  "keywords": [
+    "expo",
+    "react-native",
+    "privacy",
+    "app-store",
+    "consent",
+    "ai"
+  ],
+  "homepage": "https://github.com/shashmit/expo-ai-privacy-compliance#readme",
+  "bugs": {
+    "url": "https://github.com/shashmit/expo-ai-privacy-compliance/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shashmit/expo-ai-privacy-compliance.git"
+  },
+  "license": "MIT",
+  "author": "Shashmit",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "prepublishOnly": "npm run build && npm run lint && npm run typecheck"
+  },
+  "dependencies": {
+    "react": ">=18",
+    "react-native": ">=0.73"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-native": ">=0.73"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "module": "dist/index.mjs",
+  "react-native": "dist/index.js"
+}
